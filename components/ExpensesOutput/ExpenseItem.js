@@ -41,15 +41,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   amountContainer: {
-    paddingHorizontal: 12,
+    paddingHorizontal: 8,
     paddingVertical: 4,
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 4
+    borderRadius: 4,
+    width: 66
   },
   amount: {
     color: GlobalStyles.colours.primary500,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    width: '100%',
+    textAlign: 'center'
   }
 });
