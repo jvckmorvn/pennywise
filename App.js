@@ -3,7 +3,6 @@ import { StatusBar } from 'expo-status-bar';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-// import Ionicons from '@expo/vector-icons';
 
 import ManageExpense from './screens/ManageExpense';
 import RecentExpenses from './screens/RecentExpenses';
@@ -40,8 +39,8 @@ function ExpensesOverview() {
         options={{
           title: 'Recent Expenses',
           tabBarLabel: 'Recent',
-          tabBarIcon: ({color, size}) => {
-            <Ionicons name="heart-outline" size={size} color={color}></Ionicons>
+          tabBarIcon: ({colour, size}) => {
+            <Ionicons name='hourglass' size={size} color={colour}/>
           }
         }}
       />
@@ -51,8 +50,8 @@ function ExpensesOverview() {
         options={{
           title: 'All Expenses',
           tabBarLabel: 'All',
-          tabBarIcon: ({color, size}) => {
-            <Ionicons name='calendar' size={size} color={color}></Ionicons>
+          tabBarIcon: ({colour, size}) => {
+            <Ionicons name='calendar' size={size} color={colour}/>
           }
         }}
       />
@@ -66,7 +65,12 @@ export default function App() {
     <>
       <StatusBar style='light'/>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{
+          headerStyle: {
+            backgroundColor: GlobalStyles.colours.primary500
+          },
+          headerTintColor: 'white'
+        }}>
           <Stack.Screen
             name='ExpensesOverview'
             component={ExpensesOverview}
@@ -75,6 +79,7 @@ export default function App() {
           <Stack.Screen
             name='ManageExpense'
             component={ManageExpense}
+            options={{title: 'Manage Expense', presentation: 'modal'}}
           />
         </Stack.Navigator>
       </NavigationContainer>
