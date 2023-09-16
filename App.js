@@ -2,7 +2,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons';
+// import Ionicons from '@expo/vector-icons';
 
 import ManageExpense from './screens/ManageExpense';
 import RecentExpenses from './screens/RecentExpenses';
@@ -14,13 +15,13 @@ const Stack = createNativeStackNavigator();
 const BottomTabs = createBottomTabNavigator();
 
 function ExpensesOverview() {
-  function pressHandler() {
-    console.log("Pressed!");
-  }
+  // function iconButtonPressHandler() {
+  //   navigation.navigate('ManageExpense');
+  // }
 
   return (
     <BottomTabs.Navigator
-      screenOptions={{
+      screenOptions={({ navigation }) => ({
         headerStyle: {
           backgroundColor: GlobalStyles.colours.primary500
         },
@@ -30,8 +31,8 @@ function ExpensesOverview() {
         backgroundColor: GlobalStyles.colours.primary500
         },
         tabBarActiveTintColor: GlobalStyles.colours.accent500,
-        headerRight: ({tintColor}) => <IconButton icon="add" size={24} colour={tintColor} onPress={pressHandler}/>
-        }}
+        headerRight: ({tintColor}) => <IconButton icon='add' size={24} colour={tintColor} onPress={() => navigation.navigate('ManageExpense')}/>
+      })}
     >
       <BottomTabs.Screen
         name='RecentExpenses'
@@ -40,7 +41,7 @@ function ExpensesOverview() {
           title: 'Recent Expenses',
           tabBarLabel: 'Recent',
           tabBarIcon: ({color, size}) => {
-            <Ionicons name='hourglass' size={size} color={color}></Ionicons>
+            <Ionicons name="heart-outline" size={size} color={color}></Ionicons>
           }
         }}
       />
