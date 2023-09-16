@@ -16,15 +16,19 @@ export default function ManageExpenses({route, navigation}) {
   }, [navigation, isEditing]);
 
   function deleteExpenseHandler() {
-    console.log('Deleted');
+    closeModal();
   }
   
   function cancelHandler() {
-    console.log('Cancelled');
+    closeModal();
   }
   
   function confirmHandler() {
-    console.log('Confirmed');
+    closeModal();
+  }
+
+  function closeModal() {
+    navigation.goBack();
   }
 
   return (
