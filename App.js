@@ -15,10 +15,6 @@ const Stack = createNativeStackNavigator();
 const BottomTabs = createBottomTabNavigator();
 
 function ExpensesOverview() {
-  // function iconButtonPressHandler() {
-  //   navigation.navigate('ManageExpense');
-  // }
-
   return (
     <BottomTabs.Navigator
       screenOptions={({ navigation }) => ({
@@ -28,7 +24,9 @@ function ExpensesOverview() {
         headerTintColor: 'white',
         tabBarStyle:
         {
-        backgroundColor: GlobalStyles.colours.primary500
+        backgroundColor: GlobalStyles.colours.primary500,
+        paddingBottom: 4,
+        height: 56
         },
         tabBarActiveTintColor: GlobalStyles.colours.accent500,
         headerRight: ({tintColor}) => <IconButton icon='add' size={24} colour={tintColor} onPress={() => navigation.navigate('ManageExpense')}/>
@@ -40,9 +38,9 @@ function ExpensesOverview() {
         options={{
           title: 'Recent Expenses',
           tabBarLabel: 'Recent',
-          tabBarIcon: ({colour, size}) => {
-            <Ionicons name='hourglass' size={size} color={colour}/>
-          }
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="hourglass" size={size} color={color} />
+          ),
         }}
       />
       <BottomTabs.Screen
@@ -51,9 +49,9 @@ function ExpensesOverview() {
         options={{
           title: 'All Expenses',
           tabBarLabel: 'All',
-          tabBarIcon: ({colour, size}) => {
-            <Ionicons name='calendar' size={size} color={colour}/>
-          }
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="calendar" size={size} color={color}/>
+          ),
         }}
       />
     </BottomTabs.Navigator>
