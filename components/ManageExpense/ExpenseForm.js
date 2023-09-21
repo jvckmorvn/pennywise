@@ -60,38 +60,38 @@ export default function ExpenseForm({onCancel, onSubmit, submitButtonLabel, defa
   return (
     <View style={styles.form}>
       <Text style={styles.title}>My Expense</Text>
-      <View style={styles.inputsRow}>
+        <View style={styles.inputsRow}>
+          <Input
+            label='Amount'
+            invalid={!inputs.amount.isValid}
+            textInputConfig={{
+              keyboardType: 'decimal-pad',
+              onChangeText: inputChangeHandler.bind(this, 'amount'),
+              value: inputs.amount.value
+            }}
+            style={styles.rowInput}
+          />
+          <Input
+            label='Date'
+            invalid={!inputs.date.isValid}
+            textInputConfig={{
+              placeholder: 'YYYY-MM-DD',
+              maxLength: 10,
+              onChangeText: inputChangeHandler.bind(this, 'date'),
+              value: inputs.date.value
+            }}
+            style={styles.rowInput}
+          />
+        </View>
         <Input
-          label='Amount'
-          invalid={!inputs.amount.isValid}
+          label='Description'
+          invalid={!inputs.description.isValid}
           textInputConfig={{
-            keyboardType: 'decimal-pad',
-            onChangeText: inputChangeHandler.bind(this, 'amount'),
-            value: inputs.amount.value
+            multiline: true,
+            onChangeText: inputChangeHandler.bind(this, 'description'),
+            value: inputs.description.value
           }}
-          style={styles.rowInput}
         />
-        <Input
-          label='Date'
-          invalid={!inputs.date.isValid}
-          textInputConfig={{
-            placeholder: 'YYYY-MM-DD',
-            maxLength: 10,
-            onChangeText: inputChangeHandler.bind(this, 'date'),
-            value: inputs.date.value
-          }}
-          style={styles.rowInput}
-        />
-      </View>
-      <Input
-        label='Description'
-        invalid={!inputs.description.isValid}
-        textInputConfig={{
-          multiline: true,
-          onChangeText: inputChangeHandler.bind(this, 'description'),
-          value: inputs.description.value
-        }}
-      />
       {!userInputIsValid && <Text style={styles.errorText}>Invalid input values, please try again.</Text>}
       <View style={styles.buttons}>
         <Button style={styles.button} mode='flat' onPress={onCancel}>Cancel</Button>

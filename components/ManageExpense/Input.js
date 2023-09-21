@@ -9,7 +9,7 @@ export default function Input({label, invalid, textInputConfig, style}) {
   }
 
   if (invalid) {
-    inputStyles.push(invalidLabel);
+    inputStyles.push(styles.invalidLabel);
   }
 
   return (
