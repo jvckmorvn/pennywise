@@ -1,5 +1,5 @@
 # pennywise
-Expenses tracker app built using React Native
+Expenses tracker app built using React Native (back-end provided by Firebase)
 
 Screens:
 <br>
