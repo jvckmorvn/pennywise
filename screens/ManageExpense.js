@@ -8,6 +8,7 @@ import { ExpensesContext } from '../store/expenses-context';
 import ExpenseForm from '../components/ManageExpense/ExpenseForm';
 import { deleteExpense, storeExpense, updateExpense } from '../util/https';
 import LoadingOverlay from '../components/UI/LoadingOverlay';
+import ErrorOverlay from '../components/UI/ErrorOverlay';
 
 export default function ManageExpenses({route, navigation}) {
   const expensesCtx = useContext(ExpensesContext);
@@ -17,6 +18,7 @@ export default function ManageExpenses({route, navigation}) {
     expense => expense.id === editedExpenseId
   );
   const [isSending, setIsSending] = useState(false);
+  const [error, setError] = useState();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -25,10 +27,15 @@ export default function ManageExpenses({route, navigation}) {
   }, [navigation, isEditing]);
 
   async function deleteExpenseHandler() {
-    expensesCtx.deleteExpense(editedExpenseId);
     setIsSending(true);
-    await deleteExpense(editedExpenseId);
-    closeModal();
+    try {
+      await deleteExpense(editedExpenseId);
+      expensesCtx.deleteExpense(editedExpenseId);
+      closeModal();
+    } catch (error) {
+      setError('Could not delete expense.');
+      setIsSending(false);
+    }
   }
   
   function cancelHandler() {
@@ -37,18 +44,31 @@ export default function ManageExpenses({route, navigation}) {
   
   async function confirmHandler(expenseData) {
     setIsSending(true);
-    if (isEditing) {
-      expensesCtx.updateExpense(editedExpenseId, expenseData);
-      await updateExpense(editedExpenseId, expenseData);
-    } else {
-      const id = await storeExpense(expenseData);
-      expensesCtx.addExpense({...expenseData, id: id});
+    try {
+      if (isEditing) {
+        expensesCtx.updateExpense(editedExpenseId, expenseData);
+        await updateExpense(editedExpenseId, expenseData);
+      } else {
+        const id = await storeExpense(expenseData);
+        expensesCtx.addExpense({...expenseData, id: id});
+      }
+      closeModal();
+    } catch (error) {
+      setError('Could not save data');
+      setIsSending(false);
     }
-    closeModal();
   }
 
   function closeModal() {
     navigation.goBack();
+  }
+
+  function errorHandler() {
+    setError(null);
+  }
+
+  if (error && !isSending) {
+    return <ErrorOverlay message={error} onConfirm={errorHandler}/>;
   }
 
   if (isSending) {

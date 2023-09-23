@@ -1,5 +1,5 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import { GlobalStyles } from "../../constants/styles";
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { GlobalStyles } from '../../constants/styles';
 
 export default function Button({children, onPress, mode, style}) {
   const isFlat = mode === 'flat';

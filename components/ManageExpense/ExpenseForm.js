@@ -1,10 +1,10 @@
-import { StyleSheet, Text, View } from "react-native";
-import Input from "./Input";
-import { useState } from "react";
+import { StyleSheet, Text, View } from 'react-native';
+import Input from './Input';
+import { useState } from 'react';
 
-import Button from "../UI/Button";
+import Button from '../UI/Button';
 import { getFormattedDate } from '../../util/date';
-import { GlobalStyles } from "../../constants/styles";
+import { GlobalStyles } from '../../constants/styles';
 
 export default function ExpenseForm({onCancel, onSubmit, submitButtonLabel, defaultValues}) {
   const [inputs, setInputs] = useState({
