@@ -54,7 +54,7 @@ export default function ManageExpenses({route, navigation}) {
       }
       closeModal();
     } catch (error) {
-      setError('Could not save data');
+      setError('Could not save data.');
       setIsSending(false);
     }
   }
