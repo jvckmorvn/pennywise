@@ -1,12 +1,13 @@
 import { useLayoutEffect } from 'react';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import IconButton from '../components/UI/IconButton';
 import { GlobalStyles } from '../constants/styles';
 import { ExpensesContext } from '../store/expenses-context';
 import ExpenseForm from '../components/ManageExpense/ExpenseForm';
-import { storeExpense } from '../util/https';
+import { deleteExpense, storeExpense, updateExpense } from '../util/https';
+import LoadingOverlay from '../components/UI/LoadingOverlay';
 
 export default function ManageExpenses({route, navigation}) {
   const expensesCtx = useContext(ExpensesContext);
@@ -15,6 +16,7 @@ export default function ManageExpenses({route, navigation}) {
   const selectedExpense = expensesCtx.expenses.find(
     expense => expense.id === editedExpenseId
   );
+  const [isSending, setIsSending] = useState(false);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -22,8 +24,10 @@ export default function ManageExpenses({route, navigation}) {
     });
   }, [navigation, isEditing]);
 
-  function deleteExpenseHandler() {
+  async function deleteExpenseHandler() {
     expensesCtx.deleteExpense(editedExpenseId);
+    setIsSending(true);
+    await deleteExpense(editedExpenseId);
     closeModal();
   }
   
@@ -31,18 +35,24 @@ export default function ManageExpenses({route, navigation}) {
     closeModal();
   }
   
-  function confirmHandler(expenseData) {
+  async function confirmHandler(expenseData) {
+    setIsSending(true);
     if (isEditing) {
       expensesCtx.updateExpense(editedExpenseId, expenseData);
+      await updateExpense(editedExpenseId, expenseData);
     } else {
-      storeExpense(expenseData);
-      expensesCtx.addExpense(expenseData);
+      const id = await storeExpense(expenseData);
+      expensesCtx.addExpense({...expenseData, id: id});
     }
     closeModal();
   }
 
   function closeModal() {
     navigation.goBack();
+  }
+
+  if (isSending) {
+    return <LoadingOverlay/>;
   }
 
   return (

@@ -1,41 +1,10 @@
 import { createContext, useReducer } from "react";
-
-const DUMMY_EXPENSES = [
-  {
-    id: '1',
-    description: 'New shoes',
-    amount: 69.99,
-    date: new Date('2023-09-08')
-  },
-  {
-    id: '2',
-    description: 'Airpods',
-    amount: 129.99,
-    date: new Date('2023-07-02')
-  },
-  {
-    id: '3',
-    description: 'Flights to Lisbon',
-    amount: 259.99,
-    date: new Date('2023-04-14')
-  },
-  {
-    id: '4',
-    description: 'Book',
-    amount: 9.99,
-    date: new Date('2023-05-23')
-  },
-  {
-    id: '5',
-    description: 'Smoothie',
-    amount: 7.99,
-    date: new Date('2023-05-26')
-  }
-];
+import { sortByDate } from '../util/date';
 
 export const ExpensesContext = createContext({
   expenses: [],
   addExpense: ({description, amount, date}) => {},
+  setExpenses: (expenses) => {},
   deleteExpense: (id) => {},
   updateExpense: (id, {description, amount, date}) => {}
 });
@@ -43,24 +12,27 @@ export const ExpensesContext = createContext({
 function expensesReducer(state, action) {
   switch (action.type) {
     case 'ADD':
-      const id = new Date().toString() + Math.random().toString();
-      return [{...action.payload, id: id}, ...state];
+      const withAddedExpense = [{...action.payload}, ...state];
+      return sortByDate(withAddedExpense);
     case 'UPDATE':
       const updateableExpenseIndex = state.findIndex((expense) => expense.id === action.payload.id);
       const updateableExpense = state[updateableExpenseIndex];
       const updatedExpense = { ...updateableExpense, ...action.payload.expenseData };
       const updatedExpenses = [...state];
       updatedExpenses[updateableExpenseIndex] = updatedExpense;
-      return updatedExpenses;
+      return sortByDate(updatedExpenses);
     case 'DELETE':
-      return state.filter((expense) => expense.id !== action.payload);
+      const withoutDeletedExpense = state.filter((expense) => expense.id !== action.payload);
+      return sortByDate(withoutDeletedExpense);
+    case 'SET':
+      return sortByDate(action.payload);
     default:
       return state;
   }
 }
 
 export default function ExpensesContextProvider({children}) {
-  const [expensesState, dispatch] = useReducer(expensesReducer, DUMMY_EXPENSES);
+  const [expensesState, dispatch] = useReducer(expensesReducer, []);
 
   function addExpense(expenseData) {
     dispatch({type: 'ADD', payload: expenseData});
@@ -74,11 +46,16 @@ export default function ExpensesContextProvider({children}) {
     dispatch({type: 'UPDATE', payload: {id, expenseData}});
   }
 
+  function setExpenses(expenses) {
+    dispatch({type: 'SET', payload: expenses});
+  }
+
   const value = {
     expenses: expensesState,
     addExpense: addExpense,
     deleteExpense: deleteExpense,
     updateExpense: updateExpense,
+    setExpenses: setExpenses
   };
 
   return (
