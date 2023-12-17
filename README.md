@@ -1,8 +1,7 @@
 # pennywise
+
 Expenses tracker app built using React Native (back-end provided by Firebase)
 
-Screens:
-<br>
 <img width="433" alt="expenses overview screen last 7 days tab" src="https://github.com/jvckmorvn/pennywise/assets/68481327/5db5be3f-5aee-4931-9235-e54aaa2ae0f2">
 <br>
 <img width="433" alt="expenses overview screen all time tab" src="https://github.com/jvckmorvn/pennywise/assets/68481327/ae408cbc-9787-4147-8bd0-60a79e0ca896">
